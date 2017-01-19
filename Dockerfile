@@ -6,5 +6,5 @@ RUN apt-get update \
  && apt-get install -y python3 python3-dev libyaml-cpp-dev python3-pip postgresql-server-dev-${PG_VERSION} gcc libpq-dev \
  && apt-get dist-upgrade -y \
  && apt-get clean \
- && pip3 install yandex-pgmigrate \
+ && pip3 install yandex-pgmigrate pgcli \
  && rm -rf .cache/pip
