@@ -1,9 +1,12 @@
-FROM sameersbn/postgresql
+FROM avezila/postgresql
 
 MAINTAINER pioh "thepioh@zoho.com"
 
-ENV LC_ALL=C.UTF-8
-ENV LANG=C.UTF-8
+RUN locale-gen en_US.utf8
+RUN locale-gen ru_RU.utf8
+RUN update-locale
+ENV LC_ALL=ru_RU.utf8
+ENV LANG=ru_RU.utf8
 
 RUN apt-get update
 RUN apt-get install -y software-properties-common
@@ -15,7 +18,19 @@ RUN apt-get dist-upgrade -y
 RUN apt-get clean
 RUN rm -rf /usr/bin/x86_64-linux-gnu-gcc
 RUN ln -s /usr/bin/gcc-4.9 /usr/bin/x86_64-linux-gnu-gcc
+RUN pip3 install --upgrade pip
 RUN pip3 install yandex-pgmigrate pgcli
 RUN rm -rf .cache/pip
+RUN mkdir temp \
+ && cd temp \
+ && wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/hunspell-ru/ru_RU_UTF-8_20120301.zip \
+ && unzip *.zip \
+ && mv ru_RU.aff ru.affix && mv ru_RU.dic ru.dict \
+ && rm *.zip && mv * /usr/share/postgresql/9.6/tsearch_data/ \
+ && wget http://qualcode.ru/media/files/en-dict.zip && unzip *.zip && rm *.zip \
+ && mv * /usr/share/postgresql/9.6/tsearch_data/ \
+ && cd .. && rm -rf temp
+
+
 
 ADD ./entrypoint.sh /sbin/entrypoint.sh
