@@ -5,8 +5,8 @@ MAINTAINER pioh "thepioh@zoho.com"
 RUN locale-gen en_US.utf8
 RUN locale-gen ru_RU.utf8
 RUN update-locale
-ENV LC_ALL=ru_RU.utf8
-ENV LANG=ru_RU.utf8
+ENV LC_ALL=en_US.utf8
+ENV LANG=en_US.utf8
 
 RUN apt-get update
 RUN apt-get install -y software-properties-common
@@ -34,3 +34,4 @@ RUN mkdir temp \
 
 
 ADD ./entrypoint.sh /sbin/entrypoint.sh
+ADD ./functions ${PG_APP_HOME}/functions
