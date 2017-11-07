@@ -21,16 +21,7 @@ RUN ln -s /usr/bin/gcc-4.9 /usr/bin/x86_64-linux-gnu-gcc
 RUN pip3 install --upgrade pip
 RUN pip3 install yandex-pgmigrate pgcli
 RUN rm -rf .cache/pip
-RUN mkdir temp \
- && cd temp \
- && wget https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/hunspell-ru/ru_RU_UTF-8_20120301.zip \
- && unzip *.zip \
- && mv ru_RU.aff ru.affix && mv ru_RU.dic ru.dict \
- && rm *.zip && mv * /usr/share/postgresql/9.6/tsearch_data/ \
- && wget http://qualcode.ru/media/files/en-dict.zip && unzip *.zip && rm *.zip \
- && mv * /usr/share/postgresql/9.6/tsearch_data/ \
- && cd .. && rm -rf temp
-
+ADD ./tsearch_data/ /usr/share/postgresql/9.6/tsearch_data/
 
 
 ADD ./entrypoint.sh /sbin/entrypoint.sh
